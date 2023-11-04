@@ -18,6 +18,9 @@ contract YourContract {
 	string public greeting = "Building Unstoppable Apps!!!";
 	bool public premium = false;
 	uint256 public totalCounter = 0;
+	uint256 private number = 0;
+	bool public YOU_WIN = false;
+	bool public auction_started = false;
 	mapping(address => uint) public userGreetingCounter;
 
 	// Events: a way to emit log statements from smart contract that can be listened to by external parties
@@ -69,6 +72,21 @@ contract YourContract {
 
 		// emit: keyword used to trigger an event
 		emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, 0);
+	}
+
+	function startGuessingGame() public {
+		require(!auction_started, "Auction already started");
+		number = block.timestamp;
+		YOU_WIN = false;
+		auction_started = true;
+	}
+
+	function guessWin(uint256 _num) public {
+		if (number % 10 == _num) {
+			YOU_WIN = true;
+		} else {
+			YOU_WIN = false;
+		}
 	}
 
 	/**
